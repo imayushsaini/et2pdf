@@ -1,6 +1,9 @@
 import { Builder, By, until } from "selenium-webdriver";
 import puppeteer from "puppeteer";
-async function test(pageNumber) {
+
+const captchaSelector = "captcha-container";
+
+async function test() {
   const browser = await puppeteer.launch({ headless: false });
   try {
     const page = await browser.newPage();
@@ -15,12 +18,11 @@ async function scrapPage(pageNo, page) {
   await page.goto("https://www.examtopics.com/exams/amazon/*/view/" + pageNo, {
     waitUntil: "networkidle2",
   });
-  const captchaSelector = "captcha-container";
+
   const captchBox = await page.$(`.${captchaSelector}`);
   if (captchBox) {
-    console.log("captcha exists , solve it");
-    await page.waitForTimeout(60000);
-    console.log("wait done , let move");
+    console.log("captcha found , solve it bro");
+    await waitForCaptcha(page);
   }
   const elementClassName = "reveal-solution";
   await page.waitForSelector(`.${elementClassName}`);
@@ -54,9 +56,10 @@ async function waitForCaptcha(page) {
     if (!captchBox) {
       console.log("captcha solved");
       break;
-    } else {
-      y;
     }
+    await page.waitForTimeout(5000);
+    timeout += 5000;
   }
 }
+
 test();
