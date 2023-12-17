@@ -16,6 +16,7 @@
     "typescript": "^5.3.3"
   },
   "dependencies": {
+    "pdf-merger-js": "^4.3.0",
     "puppeteer": "^21.6.0",
     "selenium-webdriver": "^4.16.0"
   }
